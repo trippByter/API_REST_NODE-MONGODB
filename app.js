@@ -11,5 +11,5 @@ app.listen(port, () => {
     console.log("App is running on port:", port);
 });
 
-// Usamos la exportación del dbConnect
+
 dbConnect()
