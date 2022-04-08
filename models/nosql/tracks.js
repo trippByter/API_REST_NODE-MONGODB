@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// Declaramos el 'SCHEMA': Estructura, esquema
 const TracksSchema = new mongoose.Schema(
     {
         name:{
@@ -10,8 +9,6 @@ const TracksSchema = new mongoose.Schema(
         },
         cover:{
             type: String,
-            // Validación al ingresar este dato:
-            // cuando la URL no se URL, devuelve "ERROR_URL"
             validate: {
                 validator: (req) => {
                     return true;
@@ -39,20 +36,14 @@ const TracksSchema = new mongoose.Schema(
             },
         },
         mediaId: {
-            // String que debe conformar cierto
-            // patrón de como son en mongo
             type: mongoose.Types.ObjectId,
         },
 
     },
     {   
-        // Creamos los campos necesarios
-        // para manejar las marcas de tiempo:
-        // createAt, updateAt
         timestamps: true,
         versionKey: false,
     }
 );
 
-//             Nombre de la colección  | Estructura
 module.exports = mongoose.model("tracks", TracksSchema);
