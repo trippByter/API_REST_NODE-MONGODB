@@ -6,14 +6,14 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(cors());
+// Línea para usar solicitudes json
+app.use(express.json());
 
-// Aquí invocamos las rutas
-// localhost/api/...
-app.use("/api", require("./routes/"))
+app.use("/api", require("./routes"));
 
 app.listen(port, () => {
     console.log("App is running on port:", port);
 });
 
 
-dbConnect()
+dbConnect();
