@@ -5,6 +5,8 @@ nos conectamos a la base de datos.
 Haremos un controlador por ruta.
 */
 const {tracksModel} = require("../models");
+const {matchedData} = require("express-validator");
+const {handleHttpError} = require("../utils/handleError");
 
 
 //====Obtener lista de la base de datos====//
@@ -14,9 +16,15 @@ const {tracksModel} = require("../models");
  * @param {*} res 
  */
 const getItems = async (req, res) => {
-    // Aquí traemos todo la lista completa
-    const data = await tracksModel.find({});
-    res.send({data});
+    // Manejando errores con TRY / CATCH
+    try {
+        // Aquí traemos todo la lista completa
+        const data = await tracksModel.find({});
+        res.send({data});
+    } catch(e) {
+        handleHttpError(res, "ERROR_GET_ITEMS");
+    }
+    
 };
 //_______Obtener lista de base de datos____//
 
@@ -38,10 +46,15 @@ const getItem = async(req, res) => {};
  * @param {*} res 
  */
 const createItem = async(req, res) => {
-    const {body} = req;
-    console.log(body);
-    const data = await tracksModel.create(body);
-    res.send({data});
+    // Manejando errores con TRY / CATCH
+    try {
+        // Obtenemos un body limpio
+        const body = matchedData(req);
+        const data = await tracksModel.create(body);
+        res.send({data});
+    } catch(e) {
+        handleHttpError(res, "ERROR_CREATE_ITEMS");
+    }
 };
 //__________Insertar un registro____________//
 

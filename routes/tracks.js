@@ -10,6 +10,6 @@ const { getItems, getItem, createItem } = require("../controller/tracks");
 router.get("/", getItems);
 
 // Validamos al crear nuevo registro
-router.post("/", validatorCreateItem, customHeader, createItem);
+router.post("/", validatorCreateItem, createItem);
 
 module.exports = router;
