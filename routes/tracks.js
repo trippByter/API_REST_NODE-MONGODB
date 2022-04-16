@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {validatorCreateItem} = require("../validators/tracks");
+const customHeader = require("../middlewares/customHeader");
 const { getItems, getItem, createItem } = require("../controller/tracks");
 
 // Generamos la ruta de tracks
@@ -9,6 +10,6 @@ const { getItems, getItem, createItem } = require("../controller/tracks");
 router.get("/", getItems);
 
 // Validamos al crear nuevo registro
-router.post("/", validatorCreateItem,createItem);
+router.post("/", validatorCreateItem, customHeader, createItem);
 
 module.exports = router;
