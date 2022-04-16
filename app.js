@@ -8,6 +8,9 @@ const app = express();
 app.use(cors());
 // Línea para usar solicitudes json
 app.use(express.json());
+// Los recursos estáticos, públicos
+// se toman de "storage";
+app.use(express.static("storage"));
 
 app.use("/api", require("./routes"));
 
