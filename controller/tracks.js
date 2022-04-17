@@ -109,7 +109,8 @@ const deleteItem = async(req, res) => {
         // Obtenemos el id
         const {id} = req;
         // Borrar solo si '_id' es igual a 'id'
-        const data = await tracksModel.deleteOne({_id:id});
+        // 'deleteOne' borra todo; 'delete' soft delete
+        const data = await tracksModel.delete({_id:id});
         res.send({data});
     } catch(e) {
         handleHttpError(res, "ERROR_DELETE_ITEM");

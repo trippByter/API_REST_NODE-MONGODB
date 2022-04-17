@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+// Importamos 'mongoose-delete'
+const mongooseDelete = require("mongoose-delete");
 const TracksSchema = new mongoose.Schema(
     {
         name:{
@@ -45,5 +47,10 @@ const TracksSchema = new mongoose.Schema(
         versionKey: false,
     }
 );
+
+// Usando mongoose-delete
+// Sobreescribimos los métodos ya vienen nativos de mongoose
+// con el soft-delete
+TracksSchema.plugin(mongooseDelete, {overrideMethods: "all"});
 
 module.exports = mongoose.model("tracks", TracksSchema);
