@@ -35,7 +35,20 @@ const getItems = async (req, res) => {
  * @param {*} req 
  * @param {*} res 
  */
-const getItem = async(req, res) => {};
+const getItem = async(req, res) => {
+    // Obtenemos parms que provienen de las rutas
+    try{
+        // Limpiamos el request 
+        req = matchedData(req);
+        // Obtenemos el id
+        const {id} = req;
+        // Obtenemos por 'id'
+        const data = await tracksModel.findById(id);
+        res.send({data});
+    } catch(e) {
+        handleHttpError(res, "ERROR_GET_ITEM");
+    };
+};
 //_____________Obtener detalle______________//
 
 
@@ -65,7 +78,20 @@ const createItem = async(req, res) => {
  * @param {*} req 
  * @param {*} res 
  */
-const updateItem = async(req, res) => {};
+const updateItem = async(req, res) => {
+    // Manejando errores con TRY / CATCH
+    try {
+        // De un objeto, creamos dos objetos
+        // Obtenemos el id el un objeto, y el resto de body en otro
+        const {id, ...body} = matchedData(req);
+        const data = await tracksModel.findOneAndUpdate(
+            id, body
+        );
+        res.send({data});
+    } catch(e) {
+        handleHttpError(res, "ERROR_CREATE_ITEMS");
+    }
+};
 //__________Actualizar registro____________//
 
 
@@ -75,7 +101,20 @@ const updateItem = async(req, res) => {};
  * @param {*} req 
  * @param {*} res 
  */
-const deleteItem = async(req, res) => {};
+const deleteItem = async(req, res) => {
+    // Obtenemos parms que provienen de las rutas
+    try{
+        // Limpiamos el request 
+        req = matchedData(req);
+        // Obtenemos el id
+        const {id} = req;
+        // Borrar solo si '_id' es igual a 'id'
+        const data = await tracksModel.deleteOne({_id:id});
+        res.send({data});
+    } catch(e) {
+        handleHttpError(res, "ERROR_DELETE_ITEM");
+    };
+};
 //__________Eliminar registro_____________//
 
 

@@ -6,6 +6,8 @@
 //==========Middleware de CreateItem=========//
 const {check, validationResult} = require("express-validator");
 const validateResults = require("../utils/handleValidator");
+
+// Validación para el 'createItem'
 const validatorCreateItem = [
     // Validar todos los campos del trackModel. 
     // Q exista, no esté vacío
@@ -29,6 +31,20 @@ const validatorCreateItem = [
         validateResults(req, res, next)
     }
 ];
+
+// Validación para el 'getItem'
+const validatorGetItem = [
+    check("id")
+    .exists()
+    .notEmpty()
+    .isMongoId(), // Si tiene el id de mongo
+    (req, res, next) => {
+        validateResults(req, res, next)
+    }
+];
 //__________Middleware de CreateItem__________//
 
-module.exports = {validatorCreateItem};
+module.exports = {
+    validatorCreateItem,
+    validatorGetItem
+};
