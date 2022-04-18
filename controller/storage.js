@@ -4,8 +4,13 @@ es donde finaliza el usuario, donde
 nos conectamos a la base de datos.
 Haremos un controlador por ruta.
 */
+const fs = require("fs");
+const {matchedData} = require("express-validator");
 const {storageModel} = require("../models");
+const {handleHttpError} = require("../utils/handleError");
 const PUBLIC_URL = process.env.PUBLIC_URL;
+// Ruta absoluta de archivos media
+const MEDIA_PATH = `${__dirname}/../storage`;
 
 
 //====Obtener lista de la base de datos====//
@@ -15,9 +20,13 @@ const PUBLIC_URL = process.env.PUBLIC_URL;
  * @param {*} res 
  */
 const getItems = async (req, res) => {
+    try {
     // Aquí traemos todo la lista completa
     const data = await storageModel.find({});
     res.send({data});
+    } catch(e) {
+        handleHttpError(res, "ERROR_GET_ITEMS");
+    };
 };
 //_______Obtener lista de base de datos____//
 
@@ -28,7 +37,18 @@ const getItems = async (req, res) => {
  * @param {*} req 
  * @param {*} res 
  */
-const getItem = async(req, res) => {};
+const getItem = async(req, res) => {
+    // Obtenemos parms que provienen de las rutas
+    try{
+        // Obtenemos el id
+        const {id} = matchedData(req);
+        // Obtenemos por 'id'
+        const data = await storageModel.findById(id);
+        res.send({data});
+    } catch(e) {
+        handleHttpError(res, "ERROR_GET_ITEM");
+    };
+};
 //_____________Obtener detalle______________//
 
 
@@ -39,28 +59,22 @@ const getItem = async(req, res) => {};
  * @param {*} res 
  */
 const createItem = async(req, res) => {
-    const {body, file} = req;
+    try{
+        const {body, file} = req;
     
-    console.log(file);
-    // Esto lo extraemos de la info del archivo
-    const fileData = {
-        filename: file.filename,
-        url: `${PUBLIC_URL}/${file.filename}`
+        console.log(file);
+        // Esto lo extraemos de la info del archivo
+        const fileData = {
+            filename: file.filename,
+            url: `${PUBLIC_URL}/${file.filename}`
+        };
+        const data = await storageModel.create(fileData);
+        res.send({data});
+    } catch(e) {
+        handleHttpError(res, "ERROR_CREATE_ITEM");
     };
-    const data = await storageModel.create(fileData);
-    res.send({data});
 };
 //__________Insertar un registro____________//
-
-
-//==========Actualizar registro===========//
-/**
- * Actualizar registro
- * @param {*} req 
- * @param {*} res 
- */
-const updateItem = async(req, res) => {};
-//__________Actualizar registro____________//
 
 
 //==========Eliminar registro============//
@@ -69,7 +83,32 @@ const updateItem = async(req, res) => {};
  * @param {*} req 
  * @param {*} res 
  */
-const deleteItem = async(req, res) => {};
+const deleteItem = async(req, res) => {
+    // En este paso necesitamos el 'filename'
+    // para realizar la solicitud a mongoDB
+    // Obtenemos parms que provienen de las rutas
+    try{
+        // Obtenemos el id
+        const {id} = matchedData(req);
+        // Obtenemos por 'id'
+        const dataFile = await storageModel.findById(id);
+        // await storageModel.deleteOne(id);
+        await storageModel.delete({_id: id});
+        const {filename} = dataFile;
+        const filePath = `${MEDIA_PATH}/${filename}`;
+        // Usamos 'filesystem' para eliminar
+        // Pasamos ruta absoluta
+        //fs.unlinkSync(filePath);
+        // Este objeto sirve de test
+        const data = {
+            filePath,
+            deleted: 1
+        }
+        res.send({data});
+    } catch(e) {
+        handleHttpError(res, "ERROR_DELETE_ITEM");
+    };
+};
 //__________Eliminar registro_____________//
 
 
@@ -77,7 +116,6 @@ module.exports = {
     getItems,
     getItem, 
     createItem, 
-    updateItem, 
     deleteItem
 };
 

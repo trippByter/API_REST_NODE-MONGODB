@@ -82,7 +82,7 @@ const updateItem = async(req, res) => {
     // Manejando errores con TRY / CATCH
     try {
         // De un objeto, creamos dos objetos
-        // Obtenemos el id el un objeto, y el resto de body en otro
+        // Obtenemos el id en un objeto, y el resto de body en otro
         const {id, ...body} = matchedData(req);
         const data = await tracksModel.findOneAndUpdate(
             id, body
