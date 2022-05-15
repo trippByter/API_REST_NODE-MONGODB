@@ -16,7 +16,7 @@ const validatorRegister = [
     check("email")
     .exists()
     .notEmpty()
-    .isEmail(), // Que sea email
+    .isEmail(), // Que sea email. Cambiar email en cada prueba de postman
     check("password")
     .exists()
     .notEmpty()
