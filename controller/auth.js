@@ -17,7 +17,7 @@ const registerCtrl = async(req, res) => {
         const body = {...req, password};
         // Envia el JSON de rspta con el passwd hasheado
         // res.send({data:body});
-        const dataUser = await userModel.create(body);
+        const dataUser = await usersModel.create(body);
         // Data es modelo instanciado y lo seteamos
         // el 'password'con un valor undefined
         // Esta línea es para que el password no aparezca
