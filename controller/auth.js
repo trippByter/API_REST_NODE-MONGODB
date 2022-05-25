@@ -2,7 +2,7 @@
 const {matchedData} = require("express-validator");
 const {encrypt, compare} = require("../utils/handlePassword");
 const {tokenSign} = require("../utils/handleJWT");
-const {userModel} = require("../models");
+const {usersModel} = require("../models");
 const {handleHttpError} = require("../utils/handleError");
 //=====FIN IMPORTAMOS LIBRERIAS=======//
 
@@ -44,16 +44,16 @@ const registerCtrl = async(req, res) => {
  * @param {*} req 
  * @param {*} res 
  */
-const loginCtrl = async (req,res) => {
+const loginCtrl = async (req, res) => {
     try{
         req = matchedData(req);
         // Buscamos en la base de datos al usuario
-        const user = await userModel.findOne({email: req.email})
+        const user = await usersModel.findOne({email: req.email})
         .select("password name role email");
         // Si no existe, devuelve error
         if(!user){
             handleHttpError(res, "USER_NOT_EXISTS", 404);
-            return
+            return;
         }
 
         // Traemos el hash password de la base de datos
@@ -63,7 +63,7 @@ const loginCtrl = async (req,res) => {
         // Si no coincide, devuelve error
         if(!check){
             handleHttpError(res, "PASSWORD_INVALID", 401);
-            return
+            return;
         }
 
         user.set("password", undefined, {strict: false});

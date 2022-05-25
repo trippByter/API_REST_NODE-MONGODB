@@ -11,7 +11,7 @@ const authMiddleware = async (req, res, next) => {
         //---Capturar el token con custom middleware---//
         // Si no hay token
         if(!req.headers.authorization){
-            handleHttpError(res, "NEED_SESSION", 401)
+            handleHttpError(res, "NEED_JWT_AUTH", 401)
             return
         }
         // T O K E N  :  req.headers.authorization
