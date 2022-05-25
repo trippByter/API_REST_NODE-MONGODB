@@ -1,6 +1,7 @@
 //==========L I B S===========//
 const {handleHttpError} = require("../utils/handleError");
 const {verifyToken} = require("../utils/handleJWT");
+const {usersModel} = require("../models");
 
 //======F I N   L I B S======//
 
@@ -24,6 +25,10 @@ const authMiddleware = async (req, res, next) => {
             return
         }
 
+        // Obtener el usuario que está consumiendo el token
+        const user = await usersModel.findById(dataToken._id);
+        // Inyectamos una propiedad (user) en el Request Body
+        req.user = user;
         next();
 
     }catch(e){

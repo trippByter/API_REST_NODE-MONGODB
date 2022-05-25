@@ -34,11 +34,6 @@ const registerCtrl = async(req, res) => {
     } catch(e) {
         handleHttpError(res, "ERROR_REGISTER_USER");
     };
-    
-    
-    
-    
-    
 };
 //=================FIN CREAMOS REGISTRO==================//
 
@@ -61,7 +56,7 @@ const loginCtrl = async (req,res) => {
             return
         }
 
-        // Traemos el hash pasword del req body
+        // Traemos el hash password de la base de datos
         const hashPassword = user.get("password");
         // Comparamos contraseña del req con la de la base de datos
         const check = await compare(req.password, hashPassword);
