@@ -3,9 +3,12 @@ const express = require("express");
 const cors = require("cors");
 const morganBody = require("morgan-body");
 const loggerStream = require("./utils/handleLogger");
-const dbConnect = require("./config/mongo");
+const dbConnectNoSql = require("./config/mongo");
+const {dbConnectMySql} = require("./config/mysql");
 const port = process.env.PORT || 3000;
 const app = express();
+// Usamos motor de base de datos
+const ENGINE_DB = process.env.ENGINE_DB;
 
 app.use(cors());
 // Línea para usar solicitudes json
@@ -32,5 +35,6 @@ app.listen(port, () => {
     console.log("App is running on port:", port);
 });
 
-
-dbConnect();
+// Usamos operador ternario para condicionar
+// uso de motor de base de datos
+(ENGINE_DB === "nosql") ? dbConnectNoSql() : dbConnectMySql();
