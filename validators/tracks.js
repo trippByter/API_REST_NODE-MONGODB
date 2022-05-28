@@ -22,7 +22,7 @@ const validatorCreateItem = [
     check("duration").exists().notEmpty(),
     check("duration.start").exists().notEmpty(),
     check("duration.end").exists().notEmpty(),
-    check("mediaID").exists().notEmpty().isMongoId(), // Si tiene el id de mongo
+    check("mediaID").exists().notEmpty(),
     // Esto es un middleware, y como tal , debe responder a 
     // la petición que se está realizando.
     // La petición es una señal que se generea desde el pc

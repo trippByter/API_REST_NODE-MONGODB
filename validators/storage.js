@@ -11,8 +11,7 @@ const validateResults =require("../utils/handleValidator");
 const validatorGetItem = [
     check("id")
     .exists()
-    .notEmpty()
-    .isMongoId(), // Si tiene el id de mongo
+    .notEmpty(),
     (req, res, next) => {
         validateResults(req, res, next)
     }

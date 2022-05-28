@@ -23,7 +23,7 @@ router.post("/",
   authMiddleware,
   // checkRole funciona después de authMiddleware.
   // El argumento (rol) debe ser "admin"
-  checkRole(["admin"]),
+  checkRole(["user", "admin"]),
   validatorCreateItem,
   createItem);
 

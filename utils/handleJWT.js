@@ -3,6 +3,8 @@
 //========>Importamos librerias, módulos<=======#
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET;
+const getProperties = require("../utils/handlePropEngine");
+const propKeys = getProperties();
 //=====>FIN Importamos librerias, módulos<======#
 
 /**
@@ -16,7 +18,9 @@ const tokenSign = async (user) => {
     const sign = jwt.sign(
         // Propiedad 'payload'
         {
-            _id: user._id,
+            // Esta linea es para saber si el id
+            // es de mysql o nosql
+            [propKeys.id]: user[propKeys.id],
             // Debemos verificar a nivel de backend
             // que la persona que dice ser, tiene 
             // los roles que tiene
