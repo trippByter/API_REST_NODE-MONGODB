@@ -48,6 +48,60 @@ const TracksSchema = new mongoose.Schema(
     }
 );
 
+/**
+ * Generamos relacion NoSQL - MongoDB
+ * Relación usada para método GET
+ * de /api/tracks
+ * ".findAllData" es el nombre del método que
+ * manejará el controlador. Será el mismo 
+ * nombre en el modelo MySQL
+ * */
+
+TracksSchema.statics.findAllData = function(){
+  // Dentro de "aggregate", se colocan los distintos
+  // stages o etapas por la que está pasando la consulta
+  const joinData = this.aggregate([
+    {
+      // lookup -> join de mysql
+      $lookup: {
+        from: "storages", // Tracks -> relación -> Storage
+        localField: "mediaId", // mediaId de Tracks
+        foreignField: "_id", // _id de Storage
+        as: "audio", // alias
+      },
+    },
+    {
+      $unwind: "audio"
+    }
+  ]);
+  return joinData;
+};
+
+// Obtener detalle de un "track"
+// Relación usada para método GET de /api/tracks/'id'
+TracksSchema.statics.findOneData = function (id){
+  const joinData = this.aggregate([
+    {
+      $match :{
+        _id: mongoose.Types.ObjectId(id),
+      }
+    },
+    {
+      $lookup:{
+        from: "storages",
+        localField: "mediaId",
+        foreignField: "_id",
+        as: "audio"
+      }
+    }
+  ]);
+  return joinData;
+};
+
+
+
+
+
 // Usando mongoose-delete
 // Sobreescribimos los métodos ya vienen nativos de mongoose
 // con el soft-delete

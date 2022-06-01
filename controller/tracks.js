@@ -21,7 +21,7 @@ const getItems = async (req, res) => {
         // Sabemos exactamente que usuario hace la petición 
         const user = req.user
         // Aquí traemos todo la lista completa
-        const data = await tracksModel.find({});
+        const data = await tracksModel.findAllData({});
         res.send({data, user});
     } catch(e) {
         handleHttpError(res, "ERROR_GET_ITEMS");
@@ -45,7 +45,7 @@ const getItem = async(req, res) => {
         // Obtenemos el id
         const {id} = req;
         // Obtenemos por 'id'
-        const data = await tracksModel.findById(id);
+        const data = await tracksModel.findOneData(id);
         res.send({data});
     } catch(e) {
         handleHttpError(res, "ERROR_GET_ITEM");
