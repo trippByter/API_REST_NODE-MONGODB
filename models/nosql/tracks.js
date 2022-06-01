@@ -71,7 +71,7 @@ TracksSchema.statics.findAllData = function(){
       },
     },
     {
-      $unwind: "audio"
+      $unwind: "$audio"
     }
   ]);
   return joinData;
