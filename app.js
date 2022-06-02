@@ -1,6 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const swaggerUI = require("swagger-ui-express");
+const openApiConfiguration = require("./docs/swagger");
 const morganBody = require("morgan-body");
 const loggerStream = require("./utils/handleLogger");
 const dbConnectNoSql = require("./config/mongo");
@@ -29,6 +31,16 @@ morganBody(app, {
   }
 });
 
+
+/**
+ * Definimos ruta de documentación
+/**/
+app.use("/docs", 
+  swaggerUI.serve, 
+  swaggerUI.setup(openApiConfiguration)
+);
+
+// Invocamos las rutas
 app.use("/api", require("./routes"));
 
 app.listen(port, () => {
